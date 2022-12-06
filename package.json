@@ -5,12 +5,12 @@
     "description": "Some function I find it useful",
     "unity": "2021.3",
     "unityRelease": "11f1",
-    "documentationUrl": "https://github.com/hanthuyen8/my-profile",
-    "changelogUrl": "https://github.com/hanthuyen8/my-profile",
-    "licensesUrl": "https://github.com/hanthuyen8/my-profile",
+    "documentationUrl": "https://github.com/hanthuyen8/HelperPackage",
+    "changelogUrl": "https://github.com/hanthuyen8/HelperPackage",
+    "licensesUrl": "https://github.com/hanthuyen8/HelperPackage",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/hanthuyen8/helper.git"
+        "url": "git+https://github.com/hanthuyen8/HelperPackage.git"
     },
     "keywords": [
         "nhanc18",
