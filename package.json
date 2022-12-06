@@ -1,0 +1,24 @@
+{
+    "name": "com.nhanc18.helper",
+    "version": "0.0.1",
+    "displayName": "Helper Package",
+    "description": "Some function I find it useful",
+    "unity": "2021.3",
+    "unityRelease": "11f1",
+    "documentationUrl": "https://github.com/hanthuyen8/my-profile",
+    "changelogUrl": "https://github.com/hanthuyen8/my-profile",
+    "licensesUrl": "https://github.com/hanthuyen8/my-profile",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hanthuyen8/helper.git"
+    },
+    "keywords": [
+        "nhanc18",
+        "helper"
+    ],
+    "author": {
+        "name": "nhanc18",
+        "email": "nhanc18@gmail.com",
+        "url": "https://nhanc18.dev/"
+    }
+}
