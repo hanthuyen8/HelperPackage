@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataEvent {
+namespace C18.Data {
     public interface ITableData { }
 
     public interface IDatabaseReader {
         Binder AddListener<T>(Action<T> onDataChanged) where T : ITableData;
         void RemoveListener(Binder binder);
-        T Read<T>() where T : ITableData;
+        T Get<T>() where T : ITableData;
     }
 
     public interface IDatabaseWriter {
-        void Write<T>(T data) where T : ITableData;
+        void Set<T>(T data) where T : ITableData;
     }
     
     public class Database : IDatabaseReader, IDatabaseWriter {
-        private Dictionary<Type, ITableData> _database;
-        private Dictionary<Type, Dictionary<int, Action<ITableData>>> _onDataChanged;
-        private int _listenerId;
+        private readonly Dictionary<Type, ITableData> _database = new();
+        private readonly Dictionary<Type, Dictionary<int, Action<ITableData>>> _onDataChanged = new();
+        private int _listenerId = int.MinValue;
 
         public Binder AddListener<T>(Action<T> onDataChanged) where T : ITableData {
             var key = typeof(T);
@@ -40,12 +40,12 @@ namespace DataEvent {
             list.Remove(binder.ListenerId);
         }
 
-        public T Read<T>() where T : ITableData {
+        public T Get<T>() where T : ITableData {
             var key = typeof(T);
             return (T) _database[key];
         }
 
-        public void Write<T>(T data) where T : ITableData {
+        public void Set<T>(T data) where T : ITableData {
             var key = typeof(T);
             _database[key] = data;
             DispatchEvent(key);
@@ -65,7 +65,7 @@ namespace DataEvent {
     }
 
     public class DatabaseListener {
-        private readonly Dictionary<IDatabaseReader, List<Binder>> _binders;
+        private readonly Dictionary<IDatabaseReader, List<Binder>> _binders = new();
 
         public void Listen<T>(IDatabaseReader database, Action<T> onDataChanged) where T : ITableData {
             if (!_binders.ContainsKey(database)) {
@@ -75,7 +75,7 @@ namespace DataEvent {
             _binders[database].Add(b);
         }
 
-        public void Dispose() {
+        public void Destroy() {
             foreach (var k in _binders.Keys) {
                 _binders[k].ForEach(e => k.RemoveListener(e));
             }
