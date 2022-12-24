@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace C18.Data {
-    public interface ITableData { }
+namespace C18.EventData {
+    public interface IData { }
 
     public interface IDatabaseReader {
-        Binder AddListener<T>(Action<T> onDataChanged) where T : ITableData;
+        Binder AddListener<T>(Action<T> onDataChanged) where T : IData;
         void RemoveListener(Binder binder);
-        T Get<T>() where T : ITableData;
+        T Get<T>() where T : IData;
     }
 
     public interface IDatabaseWriter {
-        void Set<T>(T data) where T : ITableData;
+        void Set<T>(T data) where T : IData;
     }
     
     public class Database : IDatabaseReader, IDatabaseWriter {
-        private readonly Dictionary<Type, ITableData> _database = new();
-        private readonly Dictionary<Type, Dictionary<int, Action<ITableData>>> _onDataChanged = new();
+        private readonly Dictionary<Type, IData> _database = new();
+        private readonly Dictionary<Type, Dictionary<int, Action<IData>>> _onDataChanged = new();
         private int _listenerId = int.MinValue;
 
-        public Binder AddListener<T>(Action<T> onDataChanged) where T : ITableData {
+        public Binder AddListener<T>(Action<T> onDataChanged) where T : IData {
             var key = typeof(T);
             if (!_onDataChanged.ContainsKey(key)) {
-                _onDataChanged.Add(key, new Dictionary<int, Action<ITableData>>());
+                _onDataChanged.Add(key, new Dictionary<int, Action<IData>>());
             }
 
             var list = _onDataChanged[key];
@@ -40,12 +40,12 @@ namespace C18.Data {
             list.Remove(binder.ListenerId);
         }
 
-        public T Get<T>() where T : ITableData {
+        public T Get<T>() where T : IData {
             var key = typeof(T);
             return (T) _database[key];
         }
 
-        public void Set<T>(T data) where T : ITableData {
+        public void Set<T>(T data) where T : IData {
             var key = typeof(T);
             _database[key] = data;
             DispatchEvent(key);
@@ -67,7 +67,7 @@ namespace C18.Data {
     public class DatabaseListener {
         private readonly Dictionary<IDatabaseReader, List<Binder>> _binders = new();
 
-        public void Listen<T>(IDatabaseReader database, Action<T> onDataChanged) where T : ITableData {
+        public void Listen<T>(IDatabaseReader database, Action<T> onDataChanged) where T : IData {
             if (!_binders.ContainsKey(database)) {
                 _binders[database] = new List<Binder>();
             }

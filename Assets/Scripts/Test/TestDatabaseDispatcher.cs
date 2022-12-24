@@ -1,9 +1,9 @@
 ﻿using System;
-using C18.Data;
+using C18.EventData;
 using UnityEngine;
 
 namespace Test {
-    public class MyData : ITableData {
+    public class MyData : IData {
         public Vector3 Position;
         public Vector3 Scale;
 
